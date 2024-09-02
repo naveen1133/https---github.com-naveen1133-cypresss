@@ -1,6 +1,22 @@
-describe('Lighthouse Audit Test', () => {
+describe('Lighthouse Audit for Page and MFE', () => {
+  const thresholds = {
+    "performance": 50,
+    "accessibility": 50,
+    "best-practices": 50,
+    "seo": 50
+  };
 
-  it('should navigate to login page and perform Lighthouse audit', () => {
+  const lighthouseOptions = {
+    formFactor: 'desktop',
+    screenEmulation: { disabled: true },
+  };
+
+  const lighthouseConfig = {
+    settings: { output: "html" },
+    extends: "lighthouse:default",
+  };
+
+  it('should generate Lighthouse report for the main page', () => {
     // Handle uncaught exceptions
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
@@ -9,14 +25,21 @@ describe('Lighthouse Audit Test', () => {
     // Visit the main URL
     cy.visit('https://uat.synchronycredit.com/accounts/?client=amazon');
 
+    // Wait for the page to load
+    cy.wait(10000);
+
     // Fill in the login form
-    cy.get('#userId').click().type('amazon6586');
-    cy.get('#password').click().type('Test12Test');
+    cy.get('#userId').type('amazon6586');
+    cy.get('#password').type('Test12Test');
     cy.get('button').contains('Secure Login').click();
 
-    // Add appropriate waiting strategies if needed
-    cy.wait(2000); // Adjust this based on your application
+    // Wait for navigation and any necessary requests
+    cy.wait(20000);
 
-    // Additional actions can be added here
+    // Click on "GOT IT" button to dismiss any pop-ups
+    cy.get('button').contains('GOT IT').click();
+
+    // Run Lighthouse audit for the entire page
+    cy.lighthouse(thresholds, lighthouseOptions, lighthouseConfig);
   });
 });
