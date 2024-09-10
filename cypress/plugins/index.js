@@ -1,15 +1,24 @@
-const { lighthouse, prepareAudit } = require("@cypress-audit/lighthouse");
-const fs = require("fs");
+const { lighthouse, prepareAudit } = require('@cypress-audit/lighthouse');
+const fs = require('fs');
+const path = require('path');
+// const merge = require('mochawesome-merge'); // Use correct import
+// const reporter = require('mochawesome-report-generator');
 
 module.exports = (on, config) => {
-  on("before:browser:launch", (browser = {}, launchOptions) => {
+  // Lighthouse Report Setup
+  on('before:browser:launch', (browser = {}, launchOptions) => {
     prepareAudit(launchOptions);
   });
-
-  on("task", {
+  require('cypress-mochawesome-reporter/plugin')(on);
+  
+  on('task', {
     lighthouse: lighthouse((lighthouseReport) => {
-      // Specify the report file name. This will be overwritten on each test run.
-      const filename = `lighthouse-report.html`;
+      const folderPath = 'reports'; // Define the folder where Lighthouse reports will be saved
+      const filename = path.join(folderPath, 'lighthouse-report.html');
+
+      if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+      }
 
       fs.writeFile(filename, lighthouseReport.report, (error) => {
         if (error) {
@@ -20,4 +29,17 @@ module.exports = (on, config) => {
       });
     }),
   });
+
+  // Mochawesome Report Setup
+//   on('after:run', async () => {
+//     try {
+//       // Merge reports
+//       const report = await merge({ files: ['cypress/reports/*.json'] });
+//       // Generate the final report
+//       await reporter.create(report, { reportDir: 'cypress-report' });
+//       console.log('Mochawesome report generated successfully.');
+//     } catch (err) {
+//       console.error('Error generating Mochawesome report:', err);
+//     }
+//   });
 };

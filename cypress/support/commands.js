@@ -29,3 +29,5 @@ import 'cypress-audit/commands';
 import '@cypress-audit/lighthouse/commands';
 
 import 'cypress-axe';
+
+import 'cypress-mochawesome-reporter/register';

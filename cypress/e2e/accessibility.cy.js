@@ -39,6 +39,8 @@ describe('Lighthouse Audit for Page and MFE', () => {
     // Click on "GOT IT" button to dismiss any pop-ups
     cy.get('button').contains('GOT IT').click();
 
+    cy.wait(20000);
+
     // Run Lighthouse audit for the entire page
     cy.lighthouse(thresholds, lighthouseOptions, lighthouseConfig);
   });
