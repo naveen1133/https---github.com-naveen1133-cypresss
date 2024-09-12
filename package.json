@@ -10,4 +10,12 @@
     "mochawesome-merge": "^4.3.0",
     "mochawesome-report-generator": "^6.2.0"
   }
+  {
+  "scripts": {
+    "test:both": "cypress run --spec 'cypress/e2e/accessibility.cy.js,cypress/e2e/activity.cy.js' --reporter mochawesome",
+    "lighthouse": "npm run lighthouse-audit", // or your specific Lighthouse command
+    "lighthouse-audit": "node your-lighthouse-script.js"
+  }
+}
+
 }
