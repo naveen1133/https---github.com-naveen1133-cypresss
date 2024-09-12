@@ -11,6 +11,8 @@
     "mochawesome-report-generator": "^6.2.0"
   }
   "scripts": {
-  "test:both": "cypress run --spec 'cypress/e2e/accessibility.cy.js,cypress/e2e/activity.cy.js' --reporter mochawesome"
-}
+    "test:both": "cypress run --spec 'cypress/e2e/accessibility.cy.js,cypress/e2e/activity.cy.js' --reporter mochawesome",
+    "lighthouse": "npm run lighthouse-audit",
+    "lighthouse-audit": "node your-lighthouse-script.js"
+  }
 }
