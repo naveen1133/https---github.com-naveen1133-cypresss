@@ -1,8 +1,7 @@
 const { lighthouse, prepareAudit } = require('@cypress-audit/lighthouse');
 const fs = require('fs');
 const path = require('path');
-// const merge = require('mochawesome-merge'); // Use correct import
-// const reporter = require('mochawesome-report-generator');
+
 
 module.exports = (on, config) => {
   // Lighthouse Report Setup
@@ -10,7 +9,7 @@ module.exports = (on, config) => {
     prepareAudit(launchOptions);
   });
   require('cypress-mochawesome-reporter/plugin')(on);
-  
+
   on('task', {
     lighthouse: lighthouse((lighthouseReport) => {
       const folderPath = 'reports'; // Define the folder where Lighthouse reports will be saved
@@ -29,17 +28,4 @@ module.exports = (on, config) => {
       });
     }),
   });
-
-  // Mochawesome Report Setup
-//   on('after:run', async () => {
-//     try {
-//       // Merge reports
-//       const report = await merge({ files: ['cypress/reports/*.json'] });
-//       // Generate the final report
-//       await reporter.create(report, { reportDir: 'cypress-report' });
-//       console.log('Mochawesome report generated successfully.');
-//     } catch (err) {
-//       console.error('Error generating Mochawesome report:', err);
-//     }
-//   });
 };

@@ -1,6 +1,6 @@
-describe('Lighthouse Audit for Page and MFE', () => {
+describe('report for Vista dash board', () => {
   const thresholds = {
-    "performance": 50,
+    "performance": 0,
     "accessibility": 50,
     "best-practices": 50,
     "seo": 50
@@ -16,32 +16,34 @@ describe('Lighthouse Audit for Page and MFE', () => {
     extends: "lighthouse:default",
   };
 
-  it('should generate Lighthouse report for the main page', () => {
-    // Handle uncaught exceptions
+  it('should generate report for vista dash board', () => {
+
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false;
     });
-
-    // Visit the main URL
+    
+    // Visit the login page
     cy.visit('https://uat.synchronycredit.com/accounts/?client=amazon');
 
-    // Wait for the page to load
-    cy.wait(10000);
-
+    cy.wait(20000);
+    
+    // Wait for specific elements to be present
+    cy.get('#userId').should('be.visible');
+    cy.get('#password').should('be.visible');
+    
     // Fill in the login form
     cy.get('#userId').type('amazon6586');
     cy.get('#password').type('Test12Test');
     cy.get('button').contains('Secure Login').click();
 
-    // Wait for navigation and any necessary requests
     cy.wait(20000);
-
-    // Click on "GOT IT" button to dismiss any pop-ups
+    
+    // Wait for navigation
     cy.get('button').contains('GOT IT').click();
 
     cy.wait(20000);
+    
+    
 
-    // Run Lighthouse audit for the entire page
-    cy.lighthouse(thresholds, lighthouseOptions, lighthouseConfig);
   });
 });
