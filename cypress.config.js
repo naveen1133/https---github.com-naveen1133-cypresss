@@ -4,7 +4,6 @@ module.exports = defineConfig({
   defaultCommandTimeout: 200000,
     pageLoadTimeout: 200000,
   chromeWebSecurity: false,
-  video: false,
 
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
